@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package oauth2.example.simplaapliko.com.oauth2.network;
+package com.simplaapliko.example.oauth2.network;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;

@@ -14,10 +14,11 @@
  * limitations under the License.
  */
 
-package oauth2.example.simplaapliko.com.oauth2.network;
+package com.simplaapliko.example.oauth2.network;
 
-import oauth2.example.simplaapliko.com.oauth2.network.request.AuthorizationRequest;
-import oauth2.example.simplaapliko.com.oauth2.network.response.Authorization;
+import com.simplaapliko.example.oauth2.network.request.AuthorizationRequest;
+import com.simplaapliko.example.oauth2.network.response.Authorization;
+
 import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
 import retrofit2.http.Header;

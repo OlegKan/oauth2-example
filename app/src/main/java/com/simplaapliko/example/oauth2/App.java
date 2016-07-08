@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package oauth2.example.simplaapliko.com.oauth2;
+package com.simplaapliko.example.oauth2;
 
 import android.app.Application;
 import android.content.Context;

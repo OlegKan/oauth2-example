@@ -14,12 +14,13 @@
  * limitations under the License.
  */
 
-package oauth2.example.simplaapliko.com.oauth2.network.request;
+package com.simplaapliko.example.oauth2.network.request;
+
+import com.google.gson.annotations.Expose;
+import com.google.gson.annotations.SerializedName;
 
 import java.util.ArrayList;
 import java.util.List;
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
 
 public class AuthorizationRequest {
 

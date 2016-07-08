@@ -14,21 +14,19 @@
  * limitations under the License.
  */
 
-package oauth2.example.simplaapliko.com.oauth2.storage;
+package com.simplaapliko.example.oauth2.storage;
 
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
 
-import oauth2.example.simplaapliko.com.oauth2.App;
+import com.simplaapliko.example.oauth2.App;
 
 public class AppPreferences {
 
     private static final String PREF_TOKEN = "token";
 
-    private AppPreferences() {
-
-    }
+    private AppPreferences() {}
 
     public static String getToken() {
         return getPreferences().getString(PREF_TOKEN, "");

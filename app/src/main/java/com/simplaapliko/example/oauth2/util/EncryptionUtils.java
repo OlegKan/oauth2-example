@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package oauth2.example.simplaapliko.com.oauth2.util;
+package com.simplaapliko.example.oauth2.util;
 
 import android.util.Base64;
 

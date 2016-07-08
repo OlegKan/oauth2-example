@@ -23,7 +23,7 @@ android {
     buildToolsVersion "24.0.0"
 
     defaultConfig {
-        applicationId "oauth2.example.simplaapliko.com.oauth2"
+        applicationId "com.simplaapliko.example.oauth2"
         minSdkVersion 15
         targetSdkVersion 24
         versionCode 1

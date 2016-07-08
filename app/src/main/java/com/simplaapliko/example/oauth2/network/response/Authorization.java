@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package oauth2.example.simplaapliko.com.oauth2.network.response;
+package com.simplaapliko.example.oauth2.network.response;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;

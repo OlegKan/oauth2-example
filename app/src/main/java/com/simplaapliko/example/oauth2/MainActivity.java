@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package oauth2.example.simplaapliko.com.oauth2;
+package com.simplaapliko.example.oauth2;
 
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
@@ -26,14 +26,15 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.simplaapliko.example.oauth2.network.RestApiClient;
+import com.simplaapliko.example.oauth2.network.request.AuthorizationRequest;
+import com.simplaapliko.example.oauth2.network.response.Authorization;
+import com.simplaapliko.example.oauth2.storage.AppPreferences;
+import com.simplaapliko.example.oauth2.util.EncryptionUtils;
+
 import java.util.Collections;
 import java.util.List;
 
-import oauth2.example.simplaapliko.com.oauth2.network.RestApiClient;
-import oauth2.example.simplaapliko.com.oauth2.network.request.AuthorizationRequest;
-import oauth2.example.simplaapliko.com.oauth2.network.response.Authorization;
-import oauth2.example.simplaapliko.com.oauth2.storage.AppPreferences;
-import oauth2.example.simplaapliko.com.oauth2.util.EncryptionUtils;
 import retrofit2.adapter.rxjava.Result;
 import rx.Subscriber;
 import rx.Subscription;
