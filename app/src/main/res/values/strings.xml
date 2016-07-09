@@ -24,4 +24,6 @@
     <string name="delete_token">delete token</string>
 
     <string name="loading">Loading…</string>
+
+    <string name="error_field_cannot_be_empty">Field cannot be empty</string>
 </resources>

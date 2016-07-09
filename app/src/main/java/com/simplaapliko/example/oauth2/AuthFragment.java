@@ -20,6 +20,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -75,14 +76,32 @@ public class AuthFragment extends Fragment {
     }
 
     private void startAuthorization() {
-        String username = mUsername.getText().toString();
-        String password = mPassword.getText().toString();
-        mOnAuthorizationListener.logIn(username, password);
+        if (areLoginCredentialsValid()) {
+            String username = mUsername.getText().toString();
+            String password = mPassword.getText().toString();
+            mOnAuthorizationListener.logIn(username, password);
+        }
     }
 
     private void deleteAuthorization() {
-        String username = mUsername.getText().toString();
-        String password = mPassword.getText().toString();
-        mOnAuthorizationListener.logOut(username, password);
+        if (areLoginCredentialsValid()) {
+            String username = mUsername.getText().toString();
+            String password = mPassword.getText().toString();
+            mOnAuthorizationListener.logOut(username, password);
+        }
+    }
+
+    private boolean areLoginCredentialsValid() {
+        boolean valid = true;
+
+        if (TextUtils.isEmpty(mUsername.getText())) {
+            valid = false;
+            mUsername.setError(getString(R.string.error_field_cannot_be_empty));
+        }
+        if (TextUtils.isEmpty(mPassword.getText())) {
+            valid = false;
+            mPassword.setError(getString(R.string.error_field_cannot_be_empty));
+        }
+        return valid;
     }
 }
