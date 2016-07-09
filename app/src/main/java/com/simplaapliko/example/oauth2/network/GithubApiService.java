@@ -18,17 +18,30 @@ package com.simplaapliko.example.oauth2.network;
 
 import com.simplaapliko.example.oauth2.network.request.AuthorizationRequest;
 import com.simplaapliko.example.oauth2.network.response.Authorization;
+import com.simplaapliko.example.oauth2.network.response.User;
 
 import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
+import retrofit2.http.DELETE;
+import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import rx.Observable;
+import rx.Single;
 
 public interface GithubApiService {
 
     @POST("authorizations")
-    Observable<Result<Authorization>> createAuthorization(
+    Single<Result<Authorization>> createAuthorization(
             @Header("Authorization") String authorization,
             @Body AuthorizationRequest authorizationRequest);
+
+    @DELETE("authorizations/{authorizationId}")
+    Single<Result<Object>> deleteAuthorization(
+            @Header("Authorization") String authorization,
+            @Path("authorizationId") int authorizationId);
+
+    @GET("user")
+    Single<Result<User>> getUser();
 }
