@@ -28,35 +28,37 @@ import android.widget.TextView;
 
 public class AuthFragment extends Fragment {
 
-    public interface OnLoginListener {
+    public interface OnAuthorizationListener {
         void logIn(String username, String password);
+        void logOut(String username, String password);
     }
 
-    private OnLoginListener mOnLoginListener;
+    private OnAuthorizationListener mOnAuthorizationListener;
     private TextView mUsername;
     private TextView mPassword;
     private Button mLogIn;
+    private Button mDeleteToken;
 
     public static AuthFragment newInstance() {
         return new AuthFragment();
     }
 
-    public AuthFragment() {
-    }
+    public AuthFragment() {}
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
         try {
-            mOnLoginListener = (OnLoginListener) context;
+            mOnAuthorizationListener = (OnAuthorizationListener) context;
         } catch (ClassCastException e) {
-            throw new ClassCastException(context.toString() + " must implement OnLoginActionListener");
+            throw new ClassCastException(context.toString() + " must implement OnAuthorizationListener");
         }
     }
 
     @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
+            @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_auth, container, false);
         initializeView(view);
         return view;
@@ -66,18 +68,21 @@ public class AuthFragment extends Fragment {
         mUsername = (TextView) view.findViewById(R.id.username);
         mPassword = (TextView) view.findViewById(R.id.password);
         mLogIn = (Button) view.findViewById(R.id.log_in);
+        mDeleteToken = (Button) view.findViewById(R.id.delete_token);
 
-        mLogIn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startAuthorization();
-            }
-        });
+        mLogIn.setOnClickListener(view1 -> startAuthorization());
+        mDeleteToken.setOnClickListener(view1 -> deleteAuthorization());
     }
 
     private void startAuthorization() {
         String username = mUsername.getText().toString();
         String password = mPassword.getText().toString();
-        mOnLoginListener.logIn(username, password);
+        mOnAuthorizationListener.logIn(username, password);
+    }
+
+    private void deleteAuthorization() {
+        String username = mUsername.getText().toString();
+        String password = mPassword.getText().toString();
+        mOnAuthorizationListener.logOut(username, password);
     }
 }

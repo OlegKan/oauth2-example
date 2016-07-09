@@ -16,6 +16,13 @@
 
 package com.simplaapliko.example.oauth2.network;
 
+import android.text.TextUtils;
+
+import com.simplaapliko.example.oauth2.storage.AppPreferences;
+
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -31,8 +38,31 @@ public class RestApiClient {
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
+                .client(getClient())
                 .build();
 
         return retrofit.create(GithubApiService.class);
+    }
+
+    private static OkHttpClient getClient() {
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
+        OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
+        okHttpClient.addInterceptor(logging);
+        okHttpClient.addNetworkInterceptor(chain -> {
+            Request.Builder builder = chain.request().newBuilder();
+
+            String accessToken = AppPreferences.getToken();
+            if (!TextUtils.isEmpty(accessToken)) {
+                String headerValue = String.format("token %1$s", accessToken);
+                builder.addHeader("Authorization", headerValue);
+            }
+
+            return chain.proceed(builder.build());
+        });
+
+        return okHttpClient.build();
     }
 }

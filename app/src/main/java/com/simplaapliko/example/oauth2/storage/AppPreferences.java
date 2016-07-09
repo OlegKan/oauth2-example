@@ -25,19 +25,34 @@ import com.simplaapliko.example.oauth2.App;
 public class AppPreferences {
 
     private static final String PREF_TOKEN = "token";
+    private static final String PREF_AUTHORIZATION_ID = "authorization_id";
 
     private AppPreferences() {}
 
     public static String getToken() {
-        return getPreferences().getString(PREF_TOKEN, "");
+        return getPreferences()
+                .getString(PREF_TOKEN, "");
     }
 
     public static void setToken(String token) {
-        getPreferences().getString(PREF_TOKEN, token);
+        getPreferences().edit()
+                .putString(PREF_TOKEN, token)
+                .apply();
     }
 
     private static SharedPreferences getPreferences() {
         Context context = App.getAppContext();
         return PreferenceManager.getDefaultSharedPreferences(context);
+    }
+
+    public static int getAuthorizationId() {
+        return getPreferences()
+                .getInt(PREF_AUTHORIZATION_ID, -1);
+    }
+
+    public static void setAuthorizationId(int authorizationId) {
+        getPreferences().edit()
+                .putInt(PREF_AUTHORIZATION_ID, authorizationId)
+                .apply();
     }
 }

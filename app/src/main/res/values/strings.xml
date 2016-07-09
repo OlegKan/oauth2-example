@@ -21,6 +21,7 @@
     <string name="username">username</string>
     <string name="password">password</string>
     <string name="log_in">log in</string>
+    <string name="delete_token">delete token</string>
 
     <string name="loading">Loading…</string>
 </resources>
