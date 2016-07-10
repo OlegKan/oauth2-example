@@ -20,6 +20,8 @@ import com.simplaapliko.example.oauth2.network.request.AuthorizationRequest;
 import com.simplaapliko.example.oauth2.network.response.Authorization;
 import com.simplaapliko.example.oauth2.network.response.User;
 
+import java.util.List;
+
 import retrofit2.adapter.rxjava.Result;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -40,4 +42,7 @@ public interface GithubApiService {
 
     @GET("user")
     Observable<Result<User>> getUser();
+
+    @GET("authorizations")
+    Observable<Result<List<Authorization>>> getAuthorizations();
 }
