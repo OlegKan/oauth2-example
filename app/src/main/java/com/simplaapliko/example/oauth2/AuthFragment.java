@@ -38,7 +38,7 @@ public class AuthFragment extends Fragment {
     private TextView mUsername;
     private TextView mPassword;
     private Button mLogIn;
-    private Button mDeleteToken;
+    private Button mDeleteAuthorization;
 
     public static AuthFragment newInstance() {
         return new AuthFragment();
@@ -69,10 +69,10 @@ public class AuthFragment extends Fragment {
         mUsername = (TextView) view.findViewById(R.id.username);
         mPassword = (TextView) view.findViewById(R.id.password);
         mLogIn = (Button) view.findViewById(R.id.log_in);
-        mDeleteToken = (Button) view.findViewById(R.id.delete_token);
+        mDeleteAuthorization = (Button) view.findViewById(R.id.delete_authorization);
 
         mLogIn.setOnClickListener(view1 -> startAuthorization());
-        mDeleteToken.setOnClickListener(view1 -> deleteAuthorization());
+        mDeleteAuthorization.setOnClickListener(view1 -> deleteAuthorization());
     }
 
     private void startAuthorization() {

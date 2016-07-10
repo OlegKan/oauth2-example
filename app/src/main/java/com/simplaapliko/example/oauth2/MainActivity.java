@@ -29,14 +29,13 @@ import com.simplaapliko.example.oauth2.network.RestApiClient;
 import com.simplaapliko.example.oauth2.network.request.AuthorizationRequest;
 import com.simplaapliko.example.oauth2.network.response.Authorization;
 import com.simplaapliko.example.oauth2.storage.AppPreferences;
-import com.simplaapliko.example.oauth2.storage.DiskStorage;
 import com.simplaapliko.example.oauth2.util.EncryptionUtils;
 
 import java.util.Collections;
 import java.util.List;
 
 import retrofit2.adapter.rxjava.Result;
-import rx.SingleSubscriber;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -72,9 +71,8 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void logOut(String username, String password) {
-        showProgress(getString(R.string.loading));
+        showProgress(getString(R.string.please_wait));
         deleteAuthorization(username, password);
-        detachFragment(mUserFragment);
     }
 
     private void showAuthFragment() {
@@ -103,16 +101,15 @@ public class MainActivity extends AppCompatActivity implements
     private void createAuthorization(String username, String password) {
         String basicAuthorization = EncryptionUtils.generateBasicAuthorization(username, password);
 
-        mSubscription = RestApiClient.githubApiService()
-                .createAuthorization(basicAuthorization, getAuthorizationRequest())
+        mSubscription = RestApiClient.githubApiService(basicAuthorization)
+                .createAuthorization(getAuthorizationRequest())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .filter(RestApiClient.RESULT_SUCCESS)
                 .map(authorizationResult -> authorizationResult.response().body())
-                .subscribe(new SingleSubscriber<Authorization>() {
+                .subscribe(new Subscriber<Authorization>() {
                     @Override
-                    public void onSuccess(Authorization authorization) {
-                        String token = authorization.getToken();
-                        AppPreferences.setToken(token);
+                    public void onCompleted() {
                         dismissProgress();
                     }
 
@@ -120,6 +117,15 @@ public class MainActivity extends AppCompatActivity implements
                     public void onError(Throwable error) {
                         dismissProgress();
                         showMessage(error.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Authorization authorization) {
+                        String token = authorization.getToken();
+                        int authorizationId = authorization.getId();
+                        AppPreferences.setToken(token);
+                        AppPreferences.setAuthorizationId(authorizationId);
+                        showUserFragment();
                     }
                 });
     }
@@ -128,22 +134,27 @@ public class MainActivity extends AppCompatActivity implements
         String basicAuthorization = EncryptionUtils.generateBasicAuthorization(username, password);
         int authorizationId = AppPreferences.getAuthorizationId();
 
-        RestApiClient.githubApiService()
-                .deleteAuthorization(basicAuthorization, authorizationId)
+        mSubscription = RestApiClient.githubApiService(basicAuthorization)
+                .deleteAuthorization(String.valueOf(authorizationId))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new SingleSubscriber<Result<Object>>() {
+                .filter(RestApiClient.RESULT_SUCCESS)
+                .subscribe(new Subscriber<Result<Object>>() {
                     @Override
-                    public void onSuccess(Result<Object> value) {
-                        AppPreferences.setAuthorizationId(-1);
-                        AppPreferences.setToken("");
+                    public void onCompleted() {
                         dismissProgress();
-                        DiskStorage.deleteUser();
                     }
 
                     @Override
                     public void onError(Throwable error) {
                         showMessage(error.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(Result<Object> result) {
+                        AppPreferences.setAuthorizationId(-1);
+                        AppPreferences.setToken("");
+                        detachFragment(mUserFragment);
                     }
                 });
     }

@@ -24,27 +24,61 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava.Result;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
+import rx.functions.Func1;
 
 public class RestApiClient {
+
+    public static final Func1<Result<?>, Boolean> RESULT_SUCCESS =
+            result -> !result.isError() && result.response().isSuccessful();
 
     private static final String BASE_URL = "https://api.github.com/";
 
     private RestApiClient() {}
+
+    public static GithubApiService githubApiService(String basicAuthorization) {
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BASE_URL)
+                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
+                .addConverterFactory(GsonConverterFactory.create())
+                .client(getCredentialClient(basicAuthorization))
+                .build();
+
+        return retrofit.create(GithubApiService.class);
+    }
 
     public static GithubApiService githubApiService() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                 .addConverterFactory(GsonConverterFactory.create())
-                .client(getClient())
+                .client(getTokenClient())
                 .build();
 
         return retrofit.create(GithubApiService.class);
     }
 
-    private static OkHttpClient getClient() {
+    private static OkHttpClient getCredentialClient(String basicAuthorization) {
+
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
+
+        OkHttpClient.Builder okHttpClient = new OkHttpClient.Builder();
+        okHttpClient.addInterceptor(logging);
+        okHttpClient.addNetworkInterceptor(chain -> {
+            Request.Builder builder = chain.request().newBuilder()
+                    .addHeader("Authorization", basicAuthorization);
+
+            Request request = builder.build();
+            return chain.proceed(request);
+        });
+
+        return okHttpClient.build();
+    }
+
+    private static OkHttpClient getTokenClient() {
 
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.setLevel(HttpLoggingInterceptor.Level.BASIC);
@@ -60,7 +94,8 @@ public class RestApiClient {
                 builder.addHeader("Authorization", headerValue);
             }
 
-            return chain.proceed(builder.build());
+            Request request = builder.build();
+            return chain.proceed(request);
         });
 
         return okHttpClient.build();

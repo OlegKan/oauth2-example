@@ -29,9 +29,8 @@ import android.widget.Toast;
 
 import com.simplaapliko.example.oauth2.network.RestApiClient;
 import com.simplaapliko.example.oauth2.network.response.User;
-import com.simplaapliko.example.oauth2.storage.DiskStorage;
 
-import rx.SingleSubscriber;
+import rx.Subscriber;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
@@ -61,41 +60,29 @@ public class UserFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        loadUser();
+        initialize();
     }
 
     private void initializeView(View view) {
         mUser = (TextView) view.findViewById(R.id.user);
     }
 
-    private void loadUser() {
+    private void initialize() {
         showProgress(getString(R.string.loading));
 
-        if (DiskStorage.readUser() == null) {
-            loadUserFromApi();
-        } else {
-            loadUserFromDisk();
-        }
+        loadDataFromApi();
     }
 
-    private void loadUserFromDisk() {
-        User user = DiskStorage.readUser();
-        mUser.setText(user.toString());
-        dismissProgress();
-    }
-
-    private void loadUserFromApi() {
+    private void loadDataFromApi() {
         mSubscription = RestApiClient.githubApiService()
                 .getUser()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
+                .filter(RestApiClient.RESULT_SUCCESS)
                 .map(userResult -> userResult.response().body())
-                .subscribe(new SingleSubscriber<User>() {
-
+                .subscribe(new Subscriber<User>() {
                     @Override
-                    public void onSuccess(User user) {
-                        mUser.setText(user.toString());
-                        DiskStorage.saveUser(user);
+                    public void onCompleted() {
                         dismissProgress();
                     }
 
@@ -103,6 +90,11 @@ public class UserFragment extends Fragment {
                     public void onError(Throwable error) {
                         dismissProgress();
                         showMessage(error.getMessage());
+                    }
+
+                    @Override
+                    public void onNext(User user) {
+                        mUser.setText(user.toString());
                     }
                 });
     }
