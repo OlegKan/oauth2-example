@@ -418,6 +418,48 @@ public class User {
         this.plan = plan;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "login='" + login + '\'' +
+                ", id=" + id +
+                ", avatarUrl='" + avatarUrl + '\'' +
+                ", gravatarId='" + gravatarId + '\'' +
+                ", url='" + url + '\'' +
+                ", htmlUrl='" + htmlUrl + '\'' +
+                ", followersUrl='" + followersUrl + '\'' +
+                ", followingUrl='" + followingUrl + '\'' +
+                ", gistsUrl='" + gistsUrl + '\'' +
+                ", starredUrl='" + starredUrl + '\'' +
+                ", subscriptionsUrl='" + subscriptionsUrl + '\'' +
+                ", organizationsUrl='" + organizationsUrl + '\'' +
+                ", reposUrl='" + reposUrl + '\'' +
+                ", eventsUrl='" + eventsUrl + '\'' +
+                ", receivedEventsUrl='" + receivedEventsUrl + '\'' +
+                ", type='" + type + '\'' +
+                ", siteAdmin=" + siteAdmin +
+                ", name='" + name + '\'' +
+                ", company='" + company + '\'' +
+                ", blog='" + blog + '\'' +
+                ", location='" + location + '\'' +
+                ", email='" + email + '\'' +
+                ", hireable=" + hireable +
+                ", bio='" + bio + '\'' +
+                ", publicRepos=" + publicRepos +
+                ", publicGists=" + publicGists +
+                ", followers=" + followers +
+                ", following=" + following +
+                ", createdAt='" + createdAt + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", totalPrivateRepos=" + totalPrivateRepos +
+                ", ownedPrivateRepos=" + ownedPrivateRepos +
+                ", privateGists=" + privateGists +
+                ", diskUsage=" + diskUsage +
+                ", collaborators=" + collaborators +
+                ", plan=" + plan +
+                '}';
+    }
+
     public class Plan {
 
         @SerializedName("name")
@@ -464,47 +506,15 @@ public class User {
         public void setCollaborators(Integer collaborators) {
             this.collaborators = collaborators;
         }
-    }
 
-    @Override
-    public String toString() {
-        return "User{" +
-                "login='" + login + '\'' +
-                ", id=" + id +
-                ", avatarUrl='" + avatarUrl + '\'' +
-                ", gravatarId='" + gravatarId + '\'' +
-                ", url='" + url + '\'' +
-                ", htmlUrl='" + htmlUrl + '\'' +
-                ", followersUrl='" + followersUrl + '\'' +
-                ", followingUrl='" + followingUrl + '\'' +
-                ", gistsUrl='" + gistsUrl + '\'' +
-                ", starredUrl='" + starredUrl + '\'' +
-                ", subscriptionsUrl='" + subscriptionsUrl + '\'' +
-                ", organizationsUrl='" + organizationsUrl + '\'' +
-                ", reposUrl='" + reposUrl + '\'' +
-                ", eventsUrl='" + eventsUrl + '\'' +
-                ", receivedEventsUrl='" + receivedEventsUrl + '\'' +
-                ", type='" + type + '\'' +
-                ", siteAdmin=" + siteAdmin +
-                ", name='" + name + '\'' +
-                ", company='" + company + '\'' +
-                ", blog='" + blog + '\'' +
-                ", location='" + location + '\'' +
-                ", email='" + email + '\'' +
-                ", hireable=" + hireable +
-                ", bio='" + bio + '\'' +
-                ", publicRepos=" + publicRepos +
-                ", publicGists=" + publicGists +
-                ", followers=" + followers +
-                ", following=" + following +
-                ", createdAt='" + createdAt + '\'' +
-                ", updatedAt='" + updatedAt + '\'' +
-                ", totalPrivateRepos=" + totalPrivateRepos +
-                ", ownedPrivateRepos=" + ownedPrivateRepos +
-                ", privateGists=" + privateGists +
-                ", diskUsage=" + diskUsage +
-                ", collaborators=" + collaborators +
-                ", plan=" + plan +
-                '}';
+        @Override
+        public String toString() {
+            return "Plan{" +
+                    "name='" + name + '\'' +
+                    ", space=" + space +
+                    ", privateRepos=" + privateRepos +
+                    ", collaborators=" + collaborators +
+                    '}';
+        }
     }
 }

@@ -157,6 +157,24 @@ public class Authorization {
         this.fingerprint = fingerprint;
     }
 
+    @Override
+    public String toString() {
+        return "Authorization{" +
+                "id=" + id +
+                ", url='" + url + '\'' +
+                ", scopes=" + scopes +
+                ", token='" + token + '\'' +
+                ", tokenLastEight='" + tokenLastEight + '\'' +
+                ", hashedToken='" + hashedToken + '\'' +
+                ", app=" + app +
+                ", note='" + note + '\'' +
+                ", noteUrl='" + noteUrl + '\'' +
+                ", updatedAt='" + updatedAt + '\'' +
+                ", createdAt='" + createdAt + '\'' +
+                ", fingerprint='" + fingerprint + '\'' +
+                '}';
+    }
+
     public class App {
 
         @SerializedName("url")
@@ -191,6 +209,15 @@ public class Authorization {
 
         public void setClientId(String clientId) {
             this.clientId = clientId;
+        }
+
+        @Override
+        public String toString() {
+            return "App{" +
+                    "url='" + url + '\'' +
+                    ", name='" + name + '\'' +
+                    ", clientId='" + clientId + '\'' +
+                    '}';
         }
     }
 }
