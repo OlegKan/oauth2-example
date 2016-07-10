@@ -25,6 +25,7 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.Toast;
 
+import com.simplaapliko.example.oauth2.network.ConnectivityUtils;
 import com.simplaapliko.example.oauth2.network.RestApiClient;
 import com.simplaapliko.example.oauth2.network.request.AuthorizationRequest;
 import com.simplaapliko.example.oauth2.network.response.Authorization;
@@ -65,14 +66,22 @@ public class MainActivity extends AppCompatActivity implements
 
     @Override
     public void logIn(String username, String password) {
-        showProgress(getString(R.string.loading));
-        createAuthorization(username, password);
+        if (ConnectivityUtils.isConnected()) {
+            showProgress(getString(R.string.loading));
+            createAuthorization(username, password);
+        } else {
+            showMessage(getString(R.string.error_check_internet_connection));
+        }
     }
 
     @Override
     public void logOut(String username, String password) {
-        showProgress(getString(R.string.please_wait));
-        deleteAuthorization(username, password);
+        if (ConnectivityUtils.isConnected()) {
+            showProgress(getString(R.string.please_wait));
+            deleteAuthorization(username, password);
+        } else {
+            showMessage(getString(R.string.error_check_internet_connection));
+        }
     }
 
     private void showAuthFragment() {
